@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: health-care
+  labels:
+    app: health-care
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: health-care
+  template:
+    metadata:
+      labels:
+        app: health-care
+    spec:
+      containers:
+      - name: health-care-container
+        image: iamajaygaur/health-care
+        ports:
+        - containerPort: 8082
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: health-care-np-service
+  labels:
+    app: health-care
+spec:
+  selector:
+    app: health-care
+
+  type: NodePort
+  ports:
+  - nodePort: 31032    
+    port: 8082
+    targetPort: 8082
